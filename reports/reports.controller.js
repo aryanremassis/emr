@@ -8,11 +8,19 @@ exports.addReport = (req, res) => {
     errors = errors.map((el) => ({ [el.param]: el.msg }));
     return res.status(400).json({ errors });
   }
-  const { user_id, filename, source, uploaded_by, report_type } = req.query;
+  const {
+    user_id,
+    appointment_id,
+    filename,
+    source,
+    uploaded_by,
+    report_type,
+  } = req.query;
   const date = moment().format("YYYY-MM-DD HH:MM:SS");
   Model.addReport(
     {
       user_id,
+      appointment_id,
       filename,
       source,
       uploaded_by,
@@ -32,6 +40,17 @@ exports.addReport = (req, res) => {
 exports.getReportById = (req, res) => {
   const { report_id } = req.params;
   Model.getReportById({ report_id }, (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: "Server error" });
+    } else {
+      return res.json({ data: data[0] });
+    }
+  });
+};
+
+exports.getReportByAppointmentId = (req, res) => {
+  const { appointment_id } = req.params;
+  Model.getReportByAppointmentId({ appointment_id }, (err, data) => {
     if (err) {
       return res.status(500).json({ error: "Server error" });
     } else {

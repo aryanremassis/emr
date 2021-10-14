@@ -6,6 +6,7 @@ const { query } = require("express-validator");
 router.post(
   "/addReport",
   query("user_id").isNumeric(),
+  query("appointment_id").isNumeric(),
   query("uploaded_by").isNumeric(),
   query("filename").notEmpty().isString(),
   query("report_type").notEmpty().isString(),
@@ -14,6 +15,11 @@ router.post(
 );
 
 router.get("/getReport/:report_id", Controller.getReportById);
+
+router.get(
+  "/getReportByAppointmentId/:appointment_id",
+  Controller.getReportByAppointmentId
+);
 
 router.get("/getReports", Controller.getReports);
 

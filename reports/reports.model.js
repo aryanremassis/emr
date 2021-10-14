@@ -16,13 +16,15 @@ function executeQuery(query, params, callback) {
 let reports = {
   addReport: function (params, callback) {
     executeQuery(
-      "insert into reports (user_id, filename, source, uploaded_by, report_type, date_created) values (?, ?, ?, ?, ?, ?)",
+      "insert into reports (user_id, appointment_id, filename, source, uploaded_by, report_type, date_created, date_modified) values (?, ?, ?, ?, ?, ?, ?, ?)",
       [
         params.user_id,
+        params.appointment_id,
         params.filename,
         params.source,
         params.uploaded_by,
         params.report_type,
+        params.date,
         params.date,
       ],
       callback
@@ -35,6 +37,13 @@ let reports = {
     executeQuery(
       "select * from reports where report_id=?",
       [params.report_id],
+      callback
+    );
+  },
+  getReportByAppointmentId: function (params, callback) {
+    executeQuery(
+      "select * from reports where appointment_id=?",
+      [params.appointment_id],
       callback
     );
   },
